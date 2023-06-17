@@ -1,9 +1,9 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DoCheck,
   OnInit,
+  signal,
 } from '@angular/core';
 import { getRandomColor } from 'src/app/color.helper';
 import { DataService } from 'src/app/services/data.service';
@@ -12,24 +12,17 @@ import { DataService } from 'src/app/services/data.service';
   selector: 'app-left-second',
   templateUrl: './left-second.component.html',
   styleUrls: ['./left-second.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LeftSecondComponent implements DoCheck, OnInit {
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private dataService: DataService
-  ) {}
+  constructor(private dataService: DataService) {}
   ngOnInit(): void {
     setTimeout(() => {
-      this.name = 'inside timer';
-      this.cdr.detectChanges();
-    }, 2000);
-    this.dataService.dataSource.subscribe((data) => {
-      this.name = data;
-      this.cdr.detectChanges();
-    });
+      this.name.set('inside timer');
+    }, 5000);
   }
-  public name!: string;
+  // public name = this.dataService.name;
+  public name = signal('');
   style!: { 'background-color': any };
   ngDoCheck(): void {
     const color = getRandomColor();
@@ -37,6 +30,6 @@ export class LeftSecondComponent implements DoCheck, OnInit {
     console.log('Left component 2 do check ', color);
   }
   clickButton() {
-    this.name = 'hello';
+    this.name.set('hello');
   }
 }

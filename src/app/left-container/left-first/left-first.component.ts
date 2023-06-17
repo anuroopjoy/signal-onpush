@@ -10,14 +10,11 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class LeftFirstComponent implements DoCheck {
   constructor(private dataService: DataService) {}
-  name: any;
+  name = this.dataService.name;
   style!: { 'background-color': any };
   ngDoCheck(): void {
     const color = getRandomColor();
     this.style = { 'background-color': color };
     console.log('Left component 1 do check ', color);
-  }
-  emitNewValue() {
-    this.dataService.sendData(this.name);
   }
 }

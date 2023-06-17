@@ -1,14 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  public dataSource = new Subject<string>();
-  constructor() {}
-
-  public sendData(value: string) {
-    this.dataSource.next(value);
-  }
+  public name = signal('');
 }
