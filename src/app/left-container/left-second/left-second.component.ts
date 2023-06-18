@@ -3,6 +3,7 @@ import {
   Component,
   DoCheck,
   OnInit,
+  effect,
   signal,
 } from '@angular/core';
 import { getRandomColor } from 'src/app/color.helper';
@@ -12,16 +13,22 @@ import { DataService } from 'src/app/services/data.service';
   selector: 'app-left-second',
   templateUrl: './left-second.component.html',
   styleUrls: ['./left-second.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeftSecondComponent implements DoCheck, OnInit {
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) {
+    effect(
+      () => {
+        this.name.set(this.dataService.name());
+      },
+      { allowSignalWrites: true }
+    );
+  }
   ngOnInit(): void {
     setTimeout(() => {
       this.name.set('inside timer');
     }, 5000);
   }
-  // public name = this.dataService.name;
   public name = signal('');
   style!: { 'background-color': any };
   ngDoCheck(): void {
